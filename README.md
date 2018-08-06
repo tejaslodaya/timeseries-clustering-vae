@@ -76,12 +76,12 @@ FYI, the entire algorithm is an unsupervised one. Labels are just used to color 
 * Determining products with similar selling patterns
 * Product cannibalization
 
-#### Niche areas
+Niche areas:
 
 * New product introduction
 * Low selling items
 * Items that are introduced and phased out quite frequently (can't estimate seasonality, data < 1yr)
-	<img src = "https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/less_data.png" style="width:500px;height:250;">
+	<img src = "https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/less_data.png" style="width:200px;height:200;">
 
 	**Solution**: Forecast items in groups (borrowed from [here](http://www.cs.utexas.edu/~inderjit/public_papers/clustering_timeseries_icde14.pdf
 ))
