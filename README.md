@@ -1,4 +1,4 @@
-# Variational Recurrent Auto-Encoders (VRAE) for timeseries clustering
+# Timeseries clustering
 
 Timeseries clustering is an unsupervised learning task aimed to partition unlabeled timeseries objects into homogenous groups/clusters. Timeseries in the same cluster are more similar to each other than timeseries in other clusters
 
@@ -14,7 +14,6 @@ In general, timeseries clustering algorithms are of two types:
 2. **Raw-data based** - directly applied over timeseries vectors without any space-transformations
 
 ## Variational Recurrent Auto-encoders (VRAE)
----------------------------------------------
 
 VRAE is a feature-based timeseries clustering algorithm, since raw-data based approach suffers from *curse of dimensionality* and is sensitive to noisy input data. The middle bottleneck layer will serve as the feature representation for the entire input timeseries.
 
@@ -34,9 +33,7 @@ The network is jointly trained on 2 loss functions:
 1. KL-divergence between the distribution learned in latent space with the normal distribution. 
 2. An auto-encoder learns the identity function, so the sequence of input and output vectors must be similar. In out case, MSE loss is calculated between x_decoded and x forming the reconstruction error. It signifying the extent to which input is reconstructed. Another option :  `SmoothL1Loss`
 
-$$
-\mathcal { L } \left( \theta ; \mathbf { x } ^ { ( i ) } \right) = - D _ { K L } ( q ( \mathbf { z } | \mathbf { x } ^ { ( i ) } ) \| p ( \mathbf { z } ) ) + \mathbb { E } _ { q ( \mathbf { z } | \mathbf { x } ^ { ( i ) } ) } \left[ \log p _ { \theta } \left( \mathbf { x } ^ { ( i ) } | \mathbf { z } \right) \right]
-$$
+<img src='https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/math.png' >
 
 #### Optimizer
 Given the gradients and the weights, **Adam** is used to update the weights. Option provided to use **S**tochastic **G**radient **D**escent(**SGD**) for optimization.
@@ -50,13 +47,11 @@ Given the gradients and the weights, **Adam** is used to update the weights. Opt
 
 
 ## EDA
-------
 
 Exploratory data analysis is performed on the latent vectors in order to visualize the clusters formed. Since the dimension of `z` can be more than 2, it has to be converted to a lower dimension to be visualized. PCA and t-SNE is performed to visualize the clusters.
 
 
 ## Example - ECG data
----------------------
 
 The above network is trained on a dataset of 8500 ECG's and tested on 950 ECG's Accurately named ECG5000 on the [UCR archive](http://www.cs.ucr.edu/~eamonn/time_series_data/). This dataset has 5 classes, and the labels are used to generate different colors on PCA, tSNE chart.
 
@@ -75,7 +70,6 @@ FYI, the entire algorithm is an unsupervised one. Labels are just used to color 
 
 
 ## Application Areas
---------------------
 
 * Anomaly detection
 * Data reduction
@@ -96,12 +90,11 @@ FYI, the entire algorithm is an unsupervised one. Labels are just used to color 
 
 
 ## Conclusion
---------------
 
 We present variational recurrent auto-encoder that learns the structure in the timeseries. Training is unsupervised. When we color the latent vectors with the actual labels, we show that the structure makes sense.
 
 ## Requirements
----------------
+
 Repo works with:
 
 * python==3.5
@@ -113,7 +106,6 @@ Repo works with:
 
 
 ## References
--------------
 
 * [https://github.com/RobRomijnders/AE_ts](https://github.com/RobRomijnders/AE_ts)
 * [https://arxiv.org/pdf/1412.6581.pdf](https://arxiv.org/pdf/1412.6581.pdf)
