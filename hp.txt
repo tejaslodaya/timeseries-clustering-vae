@@ -1,0 +1,14 @@
+hidden_size = 90
+hidden_layer_depth = 1
+latent_length = 20
+batch_size = 32
+learning_rate = 0.0005
+n_epochs = 40
+dropout_rate = 0.2
+optimizer = 'Adam'
+cuda = True
+print_every=30
+clip = True
+max_grad_norm=5
+loss = 'MSELoss'
+block = 'LSTM'
