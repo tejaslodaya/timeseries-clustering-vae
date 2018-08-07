@@ -62,28 +62,27 @@ Here's a snapshot of the data:
 #### Results
 When the VRAE model is run on [this](https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/hp.txt) set of hyperparameters, we get the plots for both PCA and tSNE. This figure shows that latent space exhibits structure. The pink and green labels obviously cluster in different parts of the space.
 
-<img src = 'https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/pca.png' style="width:500px;height:250;">
+<img src = 'https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/pca.png'>
 
-<img src = 'https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/tsne.png' style="width:500px;height:250;"> 
+<img src = 'https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/tsne.png'> 
 
 FYI, the entire algorithm is an unsupervised one. Labels are just used to color and visually test the results. If you don't have labels for your application, you can run k-means on top of latent vectors to get labels and use those labels to color individual data points.
 
 
 ## Application Areas
 
-* Anomaly detection
-* Data reduction
-* Determining products with similar selling patterns
-* Product cannibalization
-* New product introduction
-* Low selling items
-* Items that are introduced and phased out quite frequently (can't estimate seasonality, data < 1yr)
-	<img src = "https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/less_data.png" style="width:200px;height:200;">
+1. Anomaly detection
+2. Data reduction
+3. Determining products with similar selling patterns
+4. Product cannibalization
+5. New product introduction
+6. Low selling items
+7. Items that are introduced and phased out quite frequently (can't estimate seasonality, data < 1yr)
+	<img src = "https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/less_data.png" height="50%" width="50%">
 
-	**Solution**: Forecast items in groups (borrowed from [here](http://www.cs.utexas.edu/~inderjit/public_papers/clustering_timeseries_icde14.pdf
-))
-	* Even if each item has a short/sparse life cycle, group has enough data
-	* Modeling the group is more robust to outliers or missing data
+**Solution**: Forecast items in groups (borrowed from [here](http://www.cs.utexas.edu/~inderjit/public_papers/clustering_timeseries_icde14.pdf))
+1. Even though each item has a short/sparse life cycle, clustered group has enough data
+2. Modeling the group as a whole, is more robust to outliers and missing data.
 
 
 ## Conclusion
