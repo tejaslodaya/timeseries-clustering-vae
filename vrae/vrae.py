@@ -177,6 +177,10 @@ class VRAE(BaseEstimator, nn.Module):
         self.dtype = torch.FloatTensor
         self.use_cuda = cuda
 
+        if not torch.cuda.is_available() and self.use_cuda:
+            self.use_cuda = False
+
+
         if self.use_cuda:
             self.dtype = torch.cuda.FloatTensor
 
