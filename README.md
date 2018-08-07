@@ -31,7 +31,7 @@ From here on, RNN refers to Recurrent Neural Network architecture, either LSTM/G
 The network is jointly trained on 2 loss functions:
 
 1. KL-divergence between the distribution learned in latent space with the normal distribution. 
-2. An auto-encoder learns the identity function, so the sequence of input and output vectors must be similar. In out case, MSE loss is calculated between x_decoded and x forming the reconstruction error. It signifying the extent to which input is reconstructed. Another option :  `SmoothL1Loss`
+2. An auto-encoder learns the identity function, so the sequence of input and output vectors must be similar. In our case, MSE loss is calculated between `x_decoded` and `x` forming the reconstruction error. It signifies the extent to which input is reconstructed. Another option :  `SmoothL1Loss`
 
 <img src='https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/math.png' >
 
@@ -42,21 +42,21 @@ Given the gradients and the weights, **Adam** is used to update the weights. Opt
 #### Why recurrent neural network in an auto-encoder?
 
 * The length of timeseries may vary from sample to sample. Conventional techniques only work on inputs of fixed size.
-* The patterns in timeseries can have arbitrary time sapn and be non stationary. The recurrent neural network can learn patterns in arbitrary time scaling.
+* The patterns in timeseries can have arbitrary time span and be non stationary. The recurrent neural network can learn patterns in arbitrary time scale (lag invariance)
 * The weight/linear layer in vanilla auto-encoders might grow large in size as the length of time series increases, eventually slowing down the learning process.
 
 
 ## EDA
 
-Exploratory data analysis is performed on the latent vectors in order to visualize the clusters formed. Since the dimension of `z` can be more than 2, it has to be converted to a lower dimension to be visualized. PCA and t-SNE is performed to visualize the clusters.
+Exploratory data analysis is performed on the latent vectors in order to visualize the clusters formed. Since the dimension of `z` can be more than 2, it has to be converted to a lower dimension to be visualized. PCA and t-SNE are performed to visualize the clusters.
 
 
 ## Example - ECG data
 
-The above network is trained on a dataset of 8500 ECG's and tested on 950 ECG's Accurately named ECG5000 on the [UCR archive](http://www.cs.ucr.edu/~eamonn/time_series_data/). This dataset has 5 classes, and the labels are used to generate different colors on PCA, tSNE chart.
+The above network is trained on a dataset of 8500 ECG's and tested on 950 ECG's Named ECG5000 on the [UCR archive](http://www.cs.ucr.edu/~eamonn/time_series_data/), this dataset has 5 classes, and the labels are used to generate different colors on PCA, tSNE chart.
 
 Here's a snapshot of the data:
-<img src="https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/data_examples.png" style="width:500px;height:250;">
+<img src="https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/data_examples.png">
 
 
 #### Results
@@ -75,9 +75,6 @@ FYI, the entire algorithm is an unsupervised one. Labels are just used to color 
 * Data reduction
 * Determining products with similar selling patterns
 * Product cannibalization
-
-Niche areas:
-
 * New product introduction
 * Low selling items
 * Items that are introduced and phased out quite frequently (can't estimate seasonality, data < 1yr)
