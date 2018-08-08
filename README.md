@@ -17,6 +17,10 @@ In general, timeseries clustering algorithms are of two types:
 
 VRAE is a feature-based timeseries clustering algorithm, since raw-data based approach suffers from *curse of dimensionality* and is sensitive to noisy input data. The middle bottleneck layer will serve as the feature representation for the entire input timeseries.
 
+#### Architecture
+
+<img src='https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/architecture.png'>
+
 #### The network
 From here on, RNN refers to Recurrent Neural Network architecture, either LSTM/GRU block. Our model comprises mainly of four blocks
 
