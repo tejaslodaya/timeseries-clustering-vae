@@ -112,10 +112,11 @@ def open_data(direc, ratio_train=0.8, dataset="ECG5000"):
     data_train = np.loadtxt(datadir + '_TRAIN', delimiter=',')
     data_test_val = np.loadtxt(datadir + '_TEST', delimiter=',')[:-1]
     data = np.concatenate((data_train, data_test_val), axis=0)
+    data = np.expand_dims(data, -1)
 
-    N, D = data.shape
+    N, D, _ = data.shape
 
     ind_cut = int(ratio_train * N)
     ind = np.random.permutation(N)
-    return data[ind[:ind_cut], 1:], data[ind[ind_cut:], 1:], data[ind[:ind_cut], 0], data[ind[ind_cut:], 0]
+    return data[ind[:ind_cut], 1:, :], data[ind[ind_cut:], 1:, :], data[ind[:ind_cut], 0, :], data[ind[ind_cut:], 0, :]
 

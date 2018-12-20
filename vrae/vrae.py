@@ -12,31 +12,33 @@ class Encoder(nn.Module):
     """
     Encoder network containing enrolled LSTM/GRU
 
+    :param number_of_features: number of input features
     :param hidden_size: hidden size of the RNN
     :param hidden_layer_depth: number of layers in RNN
     :param latent_length: latent vector length
     :param dropout: percentage of nodes to dropout
     :param block: LSTM/GRU block
     """
-    def __init__(self, hidden_size, hidden_layer_depth, latent_length, dropout, block = 'LSTM'):
+    def __init__(self, number_of_features, hidden_size, hidden_layer_depth, latent_length, dropout, block = 'LSTM'):
 
         super(Encoder, self).__init__()
 
+        self.number_of_features = number_of_features
         self.hidden_size = hidden_size
         self.hidden_layer_depth = hidden_layer_depth
         self.latent_length = latent_length
 
         if block == 'LSTM':
-            self.model = nn.LSTM(1, self.hidden_size, self.hidden_layer_depth, dropout = dropout)
+            self.model = nn.LSTM(self.number_of_features, self.hidden_size, self.hidden_layer_depth, dropout = dropout)
         elif block == 'GRU':
-            self.model = nn.GRU(1, self.hidden_size, self.hidden_layer_depth, dropout = dropout)
+            self.model = nn.GRU(self.number_of_features, self.hidden_size, self.hidden_layer_depth, dropout = dropout)
         else:
             raise NotImplementedError
 
     def forward(self, x):
         """Forward propagation of encoder. Given input, outputs the last hidden state of encoder
 
-        :param x: input to the encoder, of shape (sequence_length, batch_size, 1)
+        :param x: input to the encoder, of shape (sequence_length, batch_size, number_of_features)
         :return: last hidden state of encoder, of shape (batch_size, hidden_size)
         """
 
@@ -150,6 +152,7 @@ class VRAE(BaseEstimator, nn.Module):
     """Variational recurrent auto-encoder. This module is used for dimensionality reduction of timeseries
 
     :param sequence_length: length of the input sequence
+    :param number_of_features: number of input features
     :param hidden_size:  hidden size of the RNN
     :param hidden_layer_depth: number of layers in RNN
     :param latent_length: latent vector length
@@ -166,7 +169,7 @@ class VRAE(BaseEstimator, nn.Module):
     :param max_grad_norm: The grad-norm to be clipped
     :param dload: Download directory where models are to be dumped
     """
-    def __init__(self, sequence_length, hidden_size=90, hidden_layer_depth=2, latent_length=20,
+    def __init__(self, sequence_length, number_of_features, hidden_size=90, hidden_layer_depth=2, latent_length=20,
                  batch_size=32, learning_rate=0.005, block='LSTM',
                  n_epochs=5, dropout_rate=0., optimizer='Adam', loss='MSELoss',
                  cuda=False, print_every=100, clip=True, max_grad_norm=5, dload='.'):
@@ -185,7 +188,8 @@ class VRAE(BaseEstimator, nn.Module):
             self.dtype = torch.cuda.FloatTensor
 
 
-        self.encoder = Encoder(hidden_size=hidden_size,
+        self.encoder = Encoder(number_of_features = number_of_features,
+                               hidden_size=hidden_size,
                                hidden_layer_depth=hidden_layer_depth,
                                latent_length=latent_length,
                                dropout=dropout_rate,
@@ -199,7 +203,7 @@ class VRAE(BaseEstimator, nn.Module):
                                hidden_size=hidden_size,
                                hidden_layer_depth=hidden_layer_depth,
                                latent_length=latent_length,
-                               output_size=1,
+                               output_size=number_of_features,
                                block=block,
                                dtype=self.dtype)
 
@@ -300,8 +304,8 @@ class VRAE(BaseEstimator, nn.Module):
             # Index first element of array to return tensor
             X = X[0]
 
-            # required to swap axes, since dataloader gives output in (batch_size x seq_len)
-            X = X.permute(1,0).unsqueeze(-1)
+            # required to swap axes, since dataloader gives output in (batch_size x seq_len x num_of_features)
+            X = X.permute(1,0,2)
 
             self.optimizer.zero_grad()
             loss, recon_loss, kl_loss, _ = self.compute_loss(X)
@@ -395,13 +399,12 @@ class VRAE(BaseEstimator, nn.Module):
 
                 for t, x in enumerate(test_loader):
                     x = x[0]
-                    x = x.permute(1, 0).unsqueeze(-1)
+                    x = x.permute(1, 0, 2)
 
                     x_decoded_each = self._batch_reconstruct(x)
                     x_decoded.append(x_decoded_each)
 
                 x_decoded = np.concatenate(x_decoded, axis=1)
-                x_decoded = x_decoded[:, :, 0].T
 
                 if save:
                     if os.path.exists(self.dload):
@@ -435,7 +438,7 @@ class VRAE(BaseEstimator, nn.Module):
 
                 for t, x in enumerate(test_loader):
                     x = x[0]
-                    x = x.permute(1, 0).unsqueeze(-1)
+                    x = x.permute(1, 0, 2)
 
                     z_run_each = self._batch_transform(x)
                     z_run.append(z_run_each)
