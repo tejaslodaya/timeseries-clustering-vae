@@ -1,0 +1,7 @@
+matplotlib==3.0.2
+numpy==1.15.4
+plotly==3.4.2
+scikit-learn==0.20.1
+scipy==1.1.0
+torch==1.0.0
+torchvision==0.2.1

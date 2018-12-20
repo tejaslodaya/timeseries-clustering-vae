@@ -3,16 +3,10 @@ from sklearn.decomposition import TruncatedSVD
 import numpy as np
 from random import randint
 import os
-from torch.utils.data import DataLoader, TensorDataset
-import math
-import torch
-import pandas as pd
 import matplotlib.pyplot as plt
 
 from plotly.graph_objs import *
 import plotly
-
-from sklearn.metrics import mean_squared_error
 
 
 def plot_clustering(z_run, labels, engine ='plotly', download = False, folder_name ='clustering'):
