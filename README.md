@@ -95,12 +95,12 @@ We present variational recurrent auto-encoder that learns the structure in the t
 Repo works with:
 
 * python==3.5
-* torch==0.4.0
-* numpy==1.13.3
-* matplotlib==2.1.1
-* plotly==2.2.2
-* scikit-learn==0.19.1
-
+* torch==1.0.0
+* numpy==1.15.4
+* plotly==3.4.2
+* scikit-learn==0.20.1
+* matplotlib==3.0.2
+* scipy==1.1.0
 
 ## References
 
