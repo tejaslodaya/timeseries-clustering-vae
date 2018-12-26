@@ -49,9 +49,6 @@ Given the gradients and the weights, **Adam** is used to update the weights. Opt
 * The patterns in timeseries can have arbitrary time span and be non stationary. The recurrent neural network can learn patterns in arbitrary time scale (lag invariance)
 * The weight/linear layer in vanilla auto-encoders might grow large in size as the length of time series increases, eventually slowing down the learning process.
 
-
-## EDA
-
 Exploratory data analysis is performed on the latent vectors in order to visualize the clusters formed. Since the dimension of `z` can be more than 2, it has to be converted to a lower dimension to be visualized. PCA and t-SNE are performed to visualize the clusters.
 
 
@@ -64,7 +61,7 @@ Here's a snapshot of the data:
 
 
 #### Results
-When the VRAE model is run on [this](https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/hp.txt) set of hyperparameters, we get the plots for both PCA and tSNE. This figure shows that latent space exhibits structure. The pink and green labels obviously cluster in different parts of the space.
+When the VRAE model is run on [this](https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/hp.txt) set of hyperparameters, we get the plots for both PCA and tSNE. PCA and t-SNE are performed in order to convert to a lower dimension and to visualize the clusters. This figure shows that latent space exhibits structure. The pink and green labels obviously cluster in different parts of the space.
 
 <img src = 'https://raw.githubusercontent.com/tejaslodaya/timeseries-clustering-vae/master/images/pca.png'>
 
