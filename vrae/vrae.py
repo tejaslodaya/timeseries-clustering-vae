@@ -44,7 +44,7 @@ class Encoder(nn.Module):
 
         _, (h_end, c_end) = self.model(x)
 
-        h_end = h_end[0, :, :]
+        h_end = h_end[-1, :, :]
         return h_end
 
 
