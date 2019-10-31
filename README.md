@@ -54,6 +54,8 @@ Exploratory data analysis is performed on the latent vectors in order to visuali
 
 ## Example - ECG data
 
+**NOTE: Please be wary of using this dataset. I had developed this library for an internal client project and had to obfuscate data using an opensource dataset. You may find some errors in the way I'm using this data**
+
 The above network is trained on a dataset of 8500 ECG's and tested on 950 ECG's Named ECG5000 on the [UCR archive](http://www.cs.ucr.edu/~eamonn/time_series_data/), this dataset has 5 classes, and the labels are used to generate different colors on PCA, tSNE chart.
 
 Here's a snapshot of the data:
