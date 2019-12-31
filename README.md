@@ -54,7 +54,7 @@ Exploratory data analysis is performed on the latent vectors in order to visuali
 
 ## Example - ECG data
 
-**NOTE: Please be wary of using this dataset. I had developed this library for an internal client project and had to obfuscate data using an opensource dataset. You may find some errors in the way I'm using this data**
+**NOTE: Please be wary of using this dataset. I had developed this library for an internal client project and had to obfuscate data using an opensource dataset. You may find some errors in the way I'm using this data. Checkout the FAQs below if you have doubts on the implementation.**
 
 The above network is trained on a dataset of 8500 ECG's and tested on 950 ECG's Named ECG5000 on the [UCR archive](http://www.cs.ucr.edu/~eamonn/time_series_data/), this dataset has 5 classes, and the labels are used to generate different colors on PCA, tSNE chart.
 
@@ -72,6 +72,23 @@ When the VRAE model is run on [this](https://raw.githubusercontent.com/tejasloda
 FYI, the entire algorithm is an unsupervised one. Labels are just used to color and visually test the results. If you don't have labels for your application, you can run k-means on top of latent vectors to get labels and use those labels to color individual data points.
 
 
+## FAQs
+
+1. **Does VRAE support multivariate data-sets?**
+<br> Yes. It does. There's a parameter called `number_of_features`. In the case of multi-variate timeseries, pass the degree of freedom here. In case of univariate, please pass 1. Refer to this commit - [e7b57a6](https://github.com/tejaslodaya/timeseries-clustering-vae/commit/e7b57a6748ef18efbd9f026907e85c31817e2b42)<br><br>
+2. **Does VRAE support unlabelled timeseries data-sets?**
+<br> Auto-encoders are designed to work on unlabelled data, but you would need a subset of labelled data to justify the generated embeddings. This is similar to the case where you have word vectors, but you can justify those embeddings semantically by seeing if "king - queen", etc.. There has to be a way to know if VRAE is working properly (train set has to have labelled data for this). That said, you don't need labels if you have a way of visualizing the clusters. <br><br>
+3. **Does VRAE support classification as well?**
+<br> No. VRAE only converts sparse "time-series" to dense vectors. To generate classification on top of it needs the vectors to be passed to some algorithm (k-means in my example)<br><br>
+4. **In the ECG example shown, you show compression from 140 elements to 20 elements. What is an appropriate compression ratio for larger lengths, say 9k?**<br>
+The number of time-series to be fed isn't a problem, but the dimension of each time-series is. To combat this, I propose 3 approaches as described below
+- The best, naive solution is to go ahead with the raw clustering and feeding in 9k dimensions. Build a much stronger neural network with "gradually" descending layer in encoders and their relative pairs in the decoders. This network will have a lot of parameters to train and would need larger machine and more time to train this. For example, you can go with 9k - 2048 - 512 - 128 - 32 (encoder) and 32 - 128 - 512 - 2048 (decoder). This way you'll have 32 dimensions in the end.
+- Use a sliding window approach where you have a window-size of `k`. Getting this `k` would need a lot of preprocessing + traditional forecasting + auto-regressive plots.
+- Average out x-days of stocks and cluster based on them. Obtain this `x` till the time your current date("dt") stops influencing ("dt-x") values. 
+5. **Is VRAE a stateful version?**<br>
+Yes. VRAE makes extensive use of RNN(LSTM/GRU) blocks which themselves are stateful in nature. Vanilla neural networks are stateless. Setting `required_grad=False` makes a variable act like a constant and including `required_grad=True` lets the network "learn" the variable's value through backprop.
+
+
 ## Application Areas
 
 1. Anomaly detection
@@ -86,7 +103,6 @@ FYI, the entire algorithm is an unsupervised one. Labels are just used to color 
 **Solution**: Forecast items in groups (borrowed from [here](http://www.cs.utexas.edu/~inderjit/public_papers/clustering_timeseries_icde14.pdf))
 1. Even though each item has a short/sparse life cycle, clustered group has enough data
 2. Modeling the group as a whole, is more robust to outliers and missing data.
-
 
 ## Conclusion
 
